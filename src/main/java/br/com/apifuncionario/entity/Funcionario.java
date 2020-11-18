@@ -5,7 +5,6 @@
  */
 package br.com.apifuncionario.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -14,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,7 +22,7 @@ import javax.persistence.TemporalType;
 public class Funcionario implements Serializable {
 
     @Id
-    @Basic(optional = false)   
+    @Basic(optional = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "funcionario_id")
     private int id;
@@ -49,6 +47,10 @@ public class Funcionario implements Serializable {
     @Basic
     @Column(name = "cargo_id")
     private int cargo_id;
+
+    @Basic
+    @Column(name = "departamento_id")
+    private int departamento_id;
 
     /**
      * @return the id
@@ -138,6 +140,20 @@ public class Funcionario implements Serializable {
             xdocument = "";
         }
         this.document = xdocument;
+    }
+
+    /**
+     * @return the departamento_id
+     */
+    public int getDepartamento_id() {
+        return departamento_id;
+    }
+
+    /**
+     * @param departamento_id the departamento_id to set
+     */
+    public void setDepartamento_id(int departamento_id) {
+        this.departamento_id = departamento_id;
     }
 
 }

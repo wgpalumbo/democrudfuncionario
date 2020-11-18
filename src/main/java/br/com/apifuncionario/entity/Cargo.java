@@ -31,6 +31,10 @@ public class Cargo implements Serializable {
     @Basic
     @Column(name = "cargo_name")
     private String name;
+    
+    @Basic
+    @Column(name = "cargo_chefe")
+    private String chefe;
 
     /**
      * @return the id
@@ -61,5 +65,19 @@ public class Cargo implements Serializable {
             xname = "";
         }
         this.name = xname;
+    }
+
+    /**
+     * @return the chefe
+     */
+    public String getChefe() {
+        return chefe;
+    }
+
+    /**
+     * @param chefe the chefe to set
+     */
+    public void setChefe(String chefe) {
+        this.chefe = chefe;
     }
 }
