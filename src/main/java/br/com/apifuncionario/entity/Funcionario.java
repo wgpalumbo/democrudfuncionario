@@ -156,4 +156,17 @@ public class Funcionario implements Serializable {
         this.departamento_id = departamento_id;
     }
 
+    @Override
+    public String toString() {
+        return "Funcionario{"
+                + "id=" + id
+                + ", Nome='" + getName() + '\''
+                + ", Idade='" + getAge() + '\''
+                + ", Aniversario='" + getBirthday() + '\''
+                + ", Documento='" + getDocument() + '\''
+                + ", Cargo_id='" + getCargo_id() + '\''
+                + ", Departamento_id='" + getDepartamento_id() + '\''
+                + '}';
+    }
+
 }

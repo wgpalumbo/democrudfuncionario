@@ -58,11 +58,11 @@ public class CargoController {
     @PostMapping(path = "/", consumes = "application/json")
     @ApiOperation(value = "Adicionar Um Cargo")
     @Async
-    public ResponseEntity adicionarCargo(@RequestBody Cargo funcionario) {
+    public ResponseEntity adicionarCargo(@RequestBody Cargo cargo) {
         String mensagem = "";
         try {
-            _cargo.save(funcionario);
-            mensagem = "Cargo " + funcionario.getName() + "  Adicionado Corretamente.";
+            _cargo.save(cargo);
+            mensagem = "Cargo " + cargo.getName() + "  Adicionado Corretamente.";
         } catch (Exception e) {
             mensagem = "Erro ao Adicionar Cargo ";
         }
@@ -86,12 +86,12 @@ public class CargoController {
     @PutMapping(path = "/", consumes = "application/json")
     @ApiOperation(value = "Atualizar Dados de Um Cargo")
     @Async
-    public ResponseEntity alterarCargo(@RequestBody Cargo funcionario) {
+    public ResponseEntity alterarCargo(@RequestBody Cargo cargo) {
         String mensagem = "";
         try {
 
-            if (_cargo.findById(funcionario.getId()) != null) {
-                _cargo.save(funcionario);
+            if (_cargo.findById(cargo.getId()) != null) {
+                _cargo.save(cargo);
                 mensagem = "Cargo Alterado Corretamente ";
             } else {
                 mensagem = "Cargo Nao Localizado !";

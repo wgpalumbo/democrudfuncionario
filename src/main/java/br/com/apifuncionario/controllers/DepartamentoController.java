@@ -57,11 +57,11 @@ public class DepartamentoController {
     @PostMapping(path = "/", consumes = "application/json")
     @ApiOperation(value = "Adicionar Um Departamento")
     @Async
-    public ResponseEntity adicionarDepartamento(@RequestBody Departamento funcionario) {
+    public ResponseEntity adicionarDepartamento(@RequestBody Departamento departamento) {
         String mensagem = "";
         try {
-            _departamento.save(funcionario);
-            mensagem = "Departamento " + funcionario.getName() + "  Adicionado Corretamente.";
+            _departamento.save(departamento);
+            mensagem = "Departamento " + departamento.getName() + "  Adicionado Corretamente.";
         } catch (Exception e) {
             mensagem = "Erro ao Adicionar Departamento ";
         }
@@ -85,12 +85,12 @@ public class DepartamentoController {
     @PutMapping(path = "/", consumes = "application/json")
     @ApiOperation(value = "Atualizar Dados de Um Departamento")
     @Async
-    public ResponseEntity alterarDepartamento(@RequestBody Departamento funcionario) {
+    public ResponseEntity alterarDepartamento(@RequestBody Departamento departamento) {
         String mensagem = "";
         try {
 
-            if (_departamento.findById(funcionario.getId()) != null) {
-                _departamento.save(funcionario);
+            if (_departamento.findById(departamento.getId()) != null) {
+                _departamento.save(departamento);
                 mensagem = "Departamento Alterado Corretamente ";
             } else {
                 mensagem = "Departamento Nao Localizado !";

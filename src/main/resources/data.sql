@@ -14,7 +14,7 @@ CREATE TABLE cargo (
 INSERT INTO cargo VALUES ( 1, 'Cargo A', 0);
 INSERT INTO cargo VALUES ( 2, 'Cargo B', 0);
 INSERT INTO cargo VALUES ( 3, 'Cargo C', 0);
-INSERT INTO cargo VALUES ( 4, 'Cargo Mestre',1);
+INSERT INTO cargo VALUES ( 4, 'Cargo Chefe',1);
 
 
 CREATE TABLE funcionario (

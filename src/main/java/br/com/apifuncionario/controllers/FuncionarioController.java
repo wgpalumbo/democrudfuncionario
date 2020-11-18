@@ -6,7 +6,12 @@
 package br.com.apifuncionario.controllers;
 
 import br.com.apifuncionario.entity.Funcionario;
+import br.com.apifuncionario.entity.Funcionario_Departamento;
+import br.com.apifuncionario.repository.ApoioRepository;
+import br.com.apifuncionario.repository.ICargo;
+import br.com.apifuncionario.repository.IDepartamento;
 import br.com.apifuncionario.repository.IFuncionario;
+import br.com.apifuncionario.repository.IFuncionario_Departamento;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -34,6 +39,14 @@ public class FuncionarioController {
 
     @Autowired
     private IFuncionario _funcionario;
+    @Autowired
+    private IDepartamento _departamento;
+    @Autowired
+    private ICargo _cargo;
+    @Autowired
+    private IFuncionario_Departamento _funcionario_departamento;
+
+    private ApoioRepository apoioCadastro;
 
     @GetMapping(path = "/listar", produces = "application/json")
     @ApiOperation(value = "Listagem de Funcionarios")
@@ -57,14 +70,38 @@ public class FuncionarioController {
     @PostMapping(path = "/", consumes = "application/json")
     @ApiOperation(value = "Adicionar Um Funcionario")
     public ResponseEntity adicionarFuncionario(@RequestBody Funcionario funcionario) {
-        String mensagem = "";
+        String mensagem = "", mensagem1 = "";
         try {
-            _funcionario.save(funcionario);
-            mensagem = "Funcionario " + funcionario.getName() + "  Adicionado Corretamente.";
+            //----
+            boolean podeAdd = true;
+            if (_departamento.findById(funcionario.getDepartamento_id()) == null) {
+                podeAdd = false;
+                mensagem1 = "Departamento Nao Localizado !";
+            }
+            if (_cargo.findById(funcionario.getCargo_id()) == null) {
+                podeAdd = false;
+                mensagem1 = "Cargo Nao Localizado !";
+            }
+            //----
+            if (podeAdd) {
+                _funcionario.save(funcionario);
+                //------
+                //Adicionando tabela historico departamento
+                Funcionario_Departamento funcionariodepartamento = new Funcionario_Departamento();
+                funcionariodepartamento.setDepartamento_id(funcionario.getDepartamento_id());
+                funcionariodepartamento.setFuncionario_id(funcionario.getId());
+                _funcionario_departamento.save(funcionariodepartamento);
+                funcionariodepartamento = null;
+                //------
+                mensagem = "Funcionario " + funcionario.getName() + "  Adicionado Corretamente.";
+            } else {
+                mensagem = "Funcionario " + funcionario.getName() + " Nao Foi Incluido Por Erro(s) no(s) Dado(s)!";
+            }
         } catch (Exception e) {
             mensagem = "Erro ao Adicionar Funcionario ";
+            //mensagem = e.getMessage();
         }
-        return ResponseEntity.ok(mensagem);
+        return ResponseEntity.ok(mensagem + " " + mensagem1);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -76,6 +113,7 @@ public class FuncionarioController {
             mensagem = "Funcionario " + String.valueOf(id) + " Excluido Corretamente !";
         } catch (Exception e) {
             mensagem = "Erro ao Remover Funcionario " + String.valueOf(id);
+            //mensagem = e.getMessage();
         }
         return ResponseEntity.ok(mensagem);
     }
@@ -83,21 +121,47 @@ public class FuncionarioController {
     @PutMapping(path = "/", consumes = "application/json")
     @ApiOperation(value = "Atualizar Dados de Um Funcionario")
     public ResponseEntity alterarFuncionario(@RequestBody Funcionario funcionario) {
-        String mensagem = "";
+        String mensagem = "", mensagem1 = "";
         try {
 
             if (_funcionario.findById(funcionario.getId()) != null) {
-                _funcionario.save(funcionario);
-                mensagem = "Funcionario Alterado Corretamente ";
+                boolean podeAdd = true;
+                if (_departamento.findById(funcionario.getDepartamento_id()) == null) {
+                    podeAdd = false;
+                    mensagem1 = "Departamento Nao Localizado !";
+                }
+                if (_cargo.findById(funcionario.getCargo_id()) == null) {
+                    podeAdd = false;
+                    mensagem1 = "Cargo Nao Localizado !";
+                }
+                //----
+                if (podeAdd) {
+                    //------
+                    //tabela historico departamento
+                    Funcionario funcionariotemp = _funcionario.findById(funcionario.getId());
+                    if (funcionariotemp.getDepartamento_id() != funcionario.getDepartamento_id()) {
+                        Funcionario_Departamento funcionariodepartamento = new Funcionario_Departamento();
+                        funcionariodepartamento.setDepartamento_id(funcionario.getDepartamento_id());
+                        funcionariodepartamento.setFuncionario_id(funcionario.getId());
+                        _funcionario_departamento.save(funcionariodepartamento);
+                        funcionariodepartamento = null;
+                    }
+                    funcionariotemp = null;
+                    //------
+                    _funcionario.save(funcionario);
+                    mensagem = "Funcionario " + funcionario.getName() + " Alterado Corretamente ";
+                } else {
+                    mensagem = "Funcionario " + funcionario.getName() + " Nao Foi Alterado Por Erro(s) no(s) Dado(s)!";
+                }
             } else {
                 mensagem = "Funcionario Nao Localizado !";
             }
 
         } catch (Exception e) {
             mensagem = "Erro ao Alterar Funcionario ";
+            //mensagem = e.getMessage();
         }
-        return ResponseEntity.ok(mensagem);
+        return ResponseEntity.ok(mensagem + " " + mensagem1);
     }
-    
-   
+
 }
