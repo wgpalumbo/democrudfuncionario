@@ -5,6 +5,7 @@
  */
 package br.com.apifuncionario.controllers;
 
+import br.com.apifuncionario.entity.Departamento;
 import br.com.apifuncionario.entity.Funcionario;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +44,26 @@ public class ListaController {
 
     }
 
+    @GetMapping(path = "/historico/{id}", produces = "application/json")
+    @ApiOperation(value = "Listar Mudanças de Departamento")
+    public List<Departamento> obterMudancas(@PathVariable int id) {
+
+        String myQuery = "SELECT FD.SEQUENCIAL_ID, ";
+        myQuery += "D.DEPARTAMENTO_NAME AS DEPTO ";
+        myQuery += "FROM ";
+        myQuery += "FUNCIONARIO F,DEPARTAMENTO D,FUNCIONARIO_DEPARTAMENTO FD ";
+        myQuery += "WHERE ";
+        myQuery += "FD.FUNCIONARIO_ID=" + String.valueOf(id) + " AND ";
+        myQuery += "FD.FUNCIONARIO_ID=F.FUNCIONARIO_ID AND  ";
+        myQuery += "FD.DEPARTAMENTO_ID = D.DEPARTAMENTO_ID ";
+        myQuery += "ORDER BY SEQUENCIAL_ID";
+
+        return jdbcTemplate.query(myQuery, (resultSet, i) -> {
+            return toDepartamento(resultSet);
+        });
+
+    }
+
     private Funcionario toFuncionario(ResultSet rs) throws SQLException {
         Funcionario person = new Funcionario();
         person.setId(rs.getInt("funcionario_id"));
@@ -52,6 +73,13 @@ public class ListaController {
         person.setCargo_id(rs.getInt("cargo_id"));
         person.setDocument(rs.getString("funcionario_document"));
         person.setDepartamento_id(rs.getInt("departamento_id"));
+        return person;
+    }
+
+    private Departamento toDepartamento(ResultSet rs) throws SQLException {
+        Departamento person = new Departamento();
+        person.setId(rs.getInt("SEQUENCIAL_ID"));
+        person.setName(rs.getString("DEPARTAMENTO_NAME"));
         return person;
     }
 

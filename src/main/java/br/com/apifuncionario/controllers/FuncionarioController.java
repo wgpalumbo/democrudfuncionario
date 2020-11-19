@@ -82,6 +82,7 @@ public class FuncionarioController {
             }
             //----
             if (podeAdd) {
+                funcionario.setId(0);
                 _funcionario.save(funcionario);
                 //------
                 //Adicionando tabela historico departamento
