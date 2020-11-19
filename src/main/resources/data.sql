@@ -7,14 +7,14 @@ DROP TABLE IF EXISTS departamento;
  
 CREATE TABLE cargo (
   cargo_id INT AUTO_INCREMENT  PRIMARY KEY,
-  cargo_name VARCHAR(50) NOT NULL ,
-  cargo_chefe INT  
+  cargo_name VARCHAR(50) NOT NULL
+   
 );
 
-INSERT INTO cargo VALUES ( 1, 'Cargo A', 0);
-INSERT INTO cargo VALUES ( 2, 'Cargo B', 0);
-INSERT INTO cargo VALUES ( 3, 'Cargo C', 0);
-INSERT INTO cargo VALUES ( 4, 'Cargo Chefe',1);
+INSERT INTO cargo VALUES ( 1, 'Cargo A');
+INSERT INTO cargo VALUES ( 2, 'Cargo B');
+INSERT INTO cargo VALUES ( 3, 'Cargo C');
+INSERT INTO cargo VALUES ( 4, 'Cargo D');
 
 
 CREATE TABLE funcionario (
@@ -37,10 +37,11 @@ CREATE TABLE funcionario_departamento (
 
 CREATE TABLE departamento (
   departamento_id INT AUTO_INCREMENT  PRIMARY KEY,
-  departamento_name VARCHAR(50) NOT NULL
+  departamento_name VARCHAR(50) NOT NULL,
+  departamento_leader INT
 );
 
-INSERT INTO departamento VALUES ( 1, 'Departamento A');
-INSERT INTO departamento VALUES ( 2, 'Departamento B');
-INSERT INTO departamento VALUES ( 3, 'Departamento C');
-INSERT INTO departamento VALUES ( 4, 'Departamento D');
+INSERT INTO departamento VALUES ( 1, 'Departamento A', 0);
+INSERT INTO departamento VALUES ( 2, 'Departamento B', 0);
+INSERT INTO departamento VALUES ( 3, 'Departamento C', 0);
+INSERT INTO departamento VALUES ( 4, 'Departamento D', 0);

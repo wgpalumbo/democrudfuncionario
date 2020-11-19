@@ -7,6 +7,7 @@ package br.com.apifuncionario.controllers;
 
 import br.com.apifuncionario.entity.Departamento;
 import br.com.apifuncionario.repository.IDepartamento;
+import br.com.apifuncionario.repository.IFuncionario;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/departamento")
 @CrossOrigin(origins = "*")
 public class DepartamentoController {
-     @Autowired
+
+    @Autowired
     private IDepartamento _departamento;
+    @Autowired
+    private IFuncionario _funcionario;
 
     @GetMapping(path = "/listar", produces = "application/json")
     @ApiOperation(value = "Listagem de Departamentos")
@@ -101,4 +105,31 @@ public class DepartamentoController {
         }
         return ResponseEntity.ok(mensagem);
     }
+
+    @PutMapping(path = "/chefe/{id}", consumes = "application/json")
+    @ApiOperation(value = "Atribuir Chefe a Um Departamento")
+    @Async
+    public ResponseEntity atribuirChefeDepartamento(@RequestBody int id) {
+        String mensagem = "";
+        try {
+
+            if (_funcionario.findById(id) != null) {
+                Departamento departamento = _departamento.findById(_funcionario.findById(id).getDepartamento_id());
+                if (departamento != null) {
+                    departamento.setLeader(id);
+                    _departamento.save(departamento);
+                    mensagem = "Chefe Atribuido Corretamente ";
+                } else {
+                    mensagem = "Funcionario Com Departamento Nao Localizado !";
+                }
+            } else {
+                mensagem = "Funcionario Nao Localizado !";
+            }
+
+        } catch (Exception e) {
+            mensagem = "Erro ao Atribuir Chefe ao Departamento ";
+        }
+        return ResponseEntity.ok(mensagem);
+    }
+
 }

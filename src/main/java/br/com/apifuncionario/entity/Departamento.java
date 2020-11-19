@@ -31,6 +31,10 @@ public class Departamento implements Serializable {
     @Basic
     @Column(name = "departamento_name")
     private String name;
+    
+     @Basic
+    @Column(name = "departamento_leader")
+    private int leader;
 
     /**
      * @return the id
@@ -61,6 +65,20 @@ public class Departamento implements Serializable {
             xname = "";
         }
         this.name = xname;
+    }
+
+    /**
+     * @return the leader
+     */
+    public int getLeader() {
+        return leader;
+    }
+
+    /**
+     * @param leader the leader to set
+     */
+    public void setLeader(int leader) {
+        this.leader = leader;
     }
 
 }
