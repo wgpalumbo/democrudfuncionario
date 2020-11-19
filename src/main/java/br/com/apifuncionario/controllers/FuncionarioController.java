@@ -7,7 +7,6 @@ package br.com.apifuncionario.controllers;
 
 import br.com.apifuncionario.entity.Funcionario;
 import br.com.apifuncionario.entity.Funcionario_Departamento;
-import br.com.apifuncionario.repository.ApoioRepository;
 import br.com.apifuncionario.repository.ICargo;
 import br.com.apifuncionario.repository.IDepartamento;
 import br.com.apifuncionario.repository.IFuncionario;
@@ -46,8 +45,7 @@ public class FuncionarioController {
     @Autowired
     private IFuncionario_Departamento _funcionario_departamento;
 
-    private ApoioRepository apoioCadastro;
-
+   
     @GetMapping(path = "/listar", produces = "application/json")
     @ApiOperation(value = "Listagem de Funcionarios")
     public List<Funcionario> listarFuncionarios() {

@@ -156,6 +156,7 @@ public class Funcionario implements Serializable {
         this.departamento_id = departamento_id;
     }
 
+    
     @Override
     public String toString() {
         return "Funcionario{"
